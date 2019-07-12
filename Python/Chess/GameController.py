@@ -117,15 +117,20 @@ class Controller(object):
         moveFigureIndex = self.findFigure(moveFrom[0], moveFrom[1], self.queue)
         moveToFigureIndex = self.findFigure(moveTo[0], moveTo[1], 1 if self.queue == 0 else 0)
         if moveFigureIndex != None:
-            canMove = CanMove(self.whiteFigures[moveFigureIndex].x, self.whiteFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove if self.queue == 0 else CanMove(self.blackFigures[moveFigureIndex].x, self.blackFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
-            if (moveTo[0], moveTo[1]) in canMove:
-                figure = self.whiteFigures.pop(moveFigureIndex) if self.queue == 0 else self.blackFigures.pop(moveFigureIndex)
-                if moveToFigureIndex != None:
-                    self.blackFigures.pop(moveToFigureIndex) if self.queue == 0 else self.whiteFigures.pop(moveToFigureIndex)
-                figure.x = moveTo[0]
-                figure.y = moveTo[1]
-                self.whiteFigures.append(figure) if self.queue == 0 else self.blackFigures.append(figure)
-                self.pawnToQuin()
+            if not self.Castling:
+                canMove = CanMove(self.whiteFigures[moveFigureIndex].x, self.whiteFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove if self.queue == 0 \
+                    else CanMove(self.blackFigures[moveFigureIndex].x, self.blackFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
+                if (moveTo[0], moveTo[1]) in canMove:
+                    figure = self.whiteFigures.pop(
+                        moveFigureIndex) if self.queue == 0 else self.blackFigures.pop(moveFigureIndex)
+                    if moveToFigureIndex != None:
+                        self.blackFigures.pop(
+                            moveToFigureIndex) if self.queue == 0 else self.whiteFigures.pop(moveToFigureIndex)
+                    figure.x = moveTo[0]
+                    figure.y = moveTo[1]
+                    self.whiteFigures.append(figure) if self.queue == 0 \
+                        else self.blackFigures.append(figure)
+                    self.pawnToQuin()
                 self.queue = 1 if self.queue == 0 else 0
                 self.board.SetFigures(self.whiteFigures, self.blackFigures)
                 return True
@@ -135,7 +140,7 @@ class Controller(object):
             return False
         # except expression as ex:
         #     return False
-        
+
     def findFigure(self, x, y, color):
         findIn = self.whiteFigures if color == 0 else self.blackFigures
         for item in findIn:
