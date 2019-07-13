@@ -125,6 +125,8 @@ class Controller(object):
                                 king.x = 0
                                 king.y = 2
                                 self.whiteFigures.append(king)
+                                self.queue = 1 if self.queue == 0 else 0
+                                self.board.SetFigures(self.whiteFigures, self.blackFigures)
                                 return True
                             else: return False
                         else: return False
@@ -147,6 +149,8 @@ class Controller(object):
                                 king.x = 0
                                 king.y = 6
                                 self.whiteFigures.append(king)
+                                self.queue = 1 if self.queue == 0 else 0
+                                self.board.SetFigures(self.whiteFigures, self.blackFigures)
                                 return True
                             else: return False
                         else: return False
@@ -171,6 +175,8 @@ class Controller(object):
                                 king.x = 7
                                 king.y = 2
                                 self.blackFigures.append(king)
+                                self.queue = 1 if self.queue == 0 else 0
+                                self.board.SetFigures(self.whiteFigures, self.blackFigures)
                                 return True
                             else: return False
                         else: return False
@@ -193,6 +199,8 @@ class Controller(object):
                                 king.x = 7
                                 king.y = 6
                                 self.blackFigures.append(king)
+                                self.queue = 1 if self.queue == 0 else 0
+                                self.board.SetFigures(self.whiteFigures, self.blackFigures)
                                 return True
                             else: return False
                         else: return False
@@ -224,9 +232,10 @@ class Controller(object):
                     self.whiteFigures.append(figure) if self.queue == 0 \
                         else self.blackFigures.append(figure)
                     self.pawnToQuin()
-            self.queue = 1 if self.queue == 0 else 0
-            self.board.SetFigures(self.whiteFigures, self.blackFigures)
-            return True
+                    self.queue = 1 if self.queue == 0 else 0
+                    self.board.SetFigures(self.whiteFigures, self.blackFigures)
+                    return True
+                else: False
         else:
             return False
         # except expression as ex:
