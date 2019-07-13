@@ -7,49 +7,45 @@ import GameElements as GE
 class Controller(object):
     def __init__(self):
         self.whiteFigures = []
-        # for y in range(8):
-        #     a = GE.Pawn(0, 1, y)
-        #     self.whiteFigures.append(a)
+        for y in range(8):
+            a = GE.Pawn(0, 1, y)
+            self.whiteFigures.append(a)
         a = GE.Rook(0, 0, 0)
         self.whiteFigures.append(a)
-        # a = GE.Knight(0, 0, 1)
-        # self.whiteFigures.append(a)
-        # a = GE.Bishop(0, 0, 2)
-        # self.whiteFigures.append(a)
-        # a = GE.Queen(0, 0, 3)
-        # self.whiteFigures.append(a)
+        a = GE.Knight(0, 0, 1)
+        self.whiteFigures.append(a)
+        a = GE.Bishop(0, 0, 2)
+        self.whiteFigures.append(a)
+        a = GE.Queen(0, 0, 3)
+        self.whiteFigures.append(a)
         a = GE.King(0, 0, 4)
         self.whiteFigures.append(a)
-        # a = GE.Bishop(0, 0, 5)
-        # self.whiteFigures.append(a)
-        # a = GE.Knight(0, 0, 6)
-        # self.whiteFigures.append(a)
+        a = GE.Bishop(0, 0, 5)
+        self.whiteFigures.append(a)
+        a = GE.Knight(0, 0, 6)
+        self.whiteFigures.append(a)
         a = GE.Rook(0, 0, 7)
         self.whiteFigures.append(a)
 
-        # self.whiteFigures.append(GE.Pawn(0, 6, 3))
-
         self.blackFigures = []
 
-        # self.blackFigures.append(GE.Pawn(1, 1, 5))
-
-        # for y in range(8):
-        #     a = GE.Pawn(1, -2, y)
-        #     self.blackFigures.append(a)
+        for y in range(8):
+            a = GE.Pawn(1, -2, y)
+            self.blackFigures.append(a)
         a = GE.Rook(1, -1, 0)
         self.blackFigures.append(a)
-        # a = GE.Knight(1, -1, 1)
-        # self.blackFigures.append(a)
-        # a = GE.Bishop(1, -1, 2)
-        # self.blackFigures.append(a)
-        # a = GE.Queen(1, -1, 3)
-        # self.blackFigures.append(a)
+        a = GE.Knight(1, -1, 1)
+        self.blackFigures.append(a)
+        a = GE.Bishop(1, -1, 2)
+        self.blackFigures.append(a)
+        a = GE.Queen(1, -1, 3)
+        self.blackFigures.append(a)
         a = GE.King(1, -1, 4)
         self.blackFigures.append(a)
-        # a = GE.Bishop(1, -1, 5)
-        # self.blackFigures.append(a)
-        # a = GE.Knight(1, -1, 6)
-        # self.blackFigures.append(a)
+        a = GE.Bishop(1, -1, 5)
+        self.blackFigures.append(a)
+        a = GE.Knight(1, -1, 6)
+        self.blackFigures.append(a)
         a = GE.Rook(1, -1, 7)
         self.blackFigures.append(a)
 
@@ -135,12 +131,74 @@ class Controller(object):
                     else: return False
                 else: return False
             elif (moveFrom[0], moveFrom[1]) == (0,7):
-                pass
+                if (moveTo[0], moveTo[1]) == (0, 5):
+                    if self.CheckToVoid(0,6) and self.CheckToVoid(0,5):
+                        oponentCanMove = self.GetAllOponentPothitionToAttak()
+                        if not (0,6) in oponentCanMove and not (0,4) in oponentCanMove:
+                            moveFigureIndex = self.findFigure(moveFrom[0], moveFrom[1], self.queue)
+                            canMove = CanMove(self.whiteFigures[moveFigureIndex].x, self.whiteFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
+                            if (moveTo[0], moveTo[1]) in canMove:
+                                figure = self.whiteFigures.pop(moveFigureIndex)
+                                figure.x = moveTo[0]
+                                figure.y = moveTo[1]
+                                self.whiteFigures.append(figure)
+                                kingIndex = self.findFigure(0, 4, self.queue)
+                                king = self.whiteFigures.pop(kingIndex)
+                                king.x = 0
+                                king.y = 6
+                                self.whiteFigures.append(king)
+                                return True
+                            else: return False
+                        else: return False
+                    else: return False
             else:
                 return False
         else:
-            # ! Тут будет Много других значений когда дело косаеться цвета фигуры, не забуть заменить, больщенство можно взять в MoveFigure
-            pass
+            if (moveFrom[0], moveFrom[1]) == (7,0):
+                if (moveTo[0], moveTo[1]) == (7, 3):
+                    if self.CheckToVoid(7,1) and self.CheckToVoid(7,2) and self.CheckToVoid(7,3):
+                        oponentCanMove = self.GetAllOponentPothitionToAttak()
+                        if not (7,2) in oponentCanMove and not (7,4) in oponentCanMove:
+                            moveFigureIndex = self.findFigure(moveFrom[0], moveFrom[1], self.queue)
+                            canMove = CanMove(self.blackFigures[moveFigureIndex].x, self.blackFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
+                            if (moveTo[0], moveTo[1]) in canMove:
+                                figure = self.blackFigures.pop(moveFigureIndex)
+                                figure.x = moveTo[0]
+                                figure.y = moveTo[1]
+                                self.blackFigures.append(figure)
+                                kingIndex = self.findFigure(7, 4, self.queue)
+                                king = self.blackFigures.pop(kingIndex)
+                                king.x = 7
+                                king.y = 2
+                                self.blackFigures.append(king)
+                                return True
+                            else: return False
+                        else: return False
+                    else: return False
+                else: return False
+            elif (moveFrom[0], moveFrom[1]) == (7,7):
+                if (moveTo[0], moveTo[1]) == (7, 5):
+                    if self.CheckToVoid(7,6) and self.CheckToVoid(7,5):
+                        oponentCanMove = self.GetAllOponentPothitionToAttak()
+                        if not (7,6) in oponentCanMove and not (7,4) in oponentCanMove:
+                            moveFigureIndex = self.findFigure(moveFrom[0], moveFrom[1], self.queue)
+                            canMove = CanMove(self.blackFigures[moveFigureIndex].x, self.blackFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
+                            if (moveTo[0], moveTo[1]) in canMove:
+                                figure = self.blackFigures.pop(moveFigureIndex)
+                                figure.x = moveTo[0]
+                                figure.y = moveTo[1]
+                                self.blackFigures.append(figure)
+                                kingIndex = self.findFigure(7, 4, self.queue)
+                                king = self.blackFigures.pop(kingIndex)
+                                king.x = 7
+                                king.y = 6
+                                self.blackFigures.append(king)
+                                return True
+                            else: return False
+                        else: return False
+                    else: return False
+            else:
+                return False
 
     def MoveFigure(self, fromTo):
         # try:
@@ -152,7 +210,7 @@ class Controller(object):
         moveFigureIndex = self.findFigure(moveFrom[0], moveFrom[1], self.queue)
         moveToFigureIndex = self.findFigure(moveTo[0], moveTo[1], 1 if self.queue == 0 else 0)
         if moveFigureIndex != None:
-            if not self.Castling:
+            if not self.Castling(moveFrom, moveTo):
                 canMove = CanMove(self.whiteFigures[moveFigureIndex].x, self.whiteFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove if self.queue == 0 \
                     else CanMove(self.blackFigures[moveFigureIndex].x, self.blackFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
                 if (moveTo[0], moveTo[1]) in canMove:
