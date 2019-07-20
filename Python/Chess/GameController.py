@@ -244,7 +244,6 @@ class Controller(object):
                 return False
 
     def MoveFigure(self, fromTo):
-        # try:
         moveFrom = (int(fromTo[1])-1, fromTo[0])
         moveFrom = (moveFrom[0], self.ConvertLetterToNumber(moveFrom[1]))
         moveTo = (int(fromTo[-1])-1, fromTo[-2])
@@ -275,8 +274,6 @@ class Controller(object):
                     False
         else:
             return False
-        # except expression as ex:
-        #     return False
 
     def findFigure(self, x, y, color):
         findIn = self.whiteFigures if color == 0 else self.blackFigures
