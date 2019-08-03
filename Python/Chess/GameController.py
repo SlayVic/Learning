@@ -56,7 +56,7 @@ class Controller(object):
     def __repr__(self):
         pass
 
-    # Сheck unite position to move
+    #* Сheck unite position to move
     def CheckUniteToMove(self, x, y, img, color):
         if img == ['♔ ', '♚ ']:
             return CanMove.__King(x, y, color)
@@ -90,7 +90,7 @@ class Controller(object):
                     retCanMove.append(cordinate)
         return retCanMove
 
-    # Check. Can a pawn become a queen?
+    #* Check. Can a pawn become a queen?
     def pawnToQuin(self):
         index = None
         for item in self.whiteFigures:
@@ -108,17 +108,17 @@ class Controller(object):
     def CheckToVoid(self, x, y):
         return self.board.boardGraphic[x][y] == "• "
 
-    # Check. Is not a castling move?
+    #* Check. Is not a castling move?
     def Castling(self, moveFrom, moveTo):
-        # Check white
+        #* Check white
         if self.queue == 0:
-            # Cheak a1 Rook
+            #* Cheak a1 Rook
             if (moveFrom[0], moveFrom[1]) == (0, 0) and self.board.boardGraphic[0][0].img == ['♖ ', '♜ ']:
                 if (moveTo[0], moveTo[1]) == (0, 3) and self.board.boardGraphic[0][4].img == ['♔ ', '♚ ']:
                     if self.CheckToVoid(0, 1) and self.CheckToVoid(0, 2) and self.CheckToVoid(0, 3):
                         oponentCanMove = self.GetAllOponentPothitionToAttak()
                         if not (0, 2) in oponentCanMove and not (0, 4) in oponentCanMove:
-                            moveFigureIndex = self.findFigure(
+                            moveFigureIndex = self.WhatFigureOnPos(
                                 moveFrom[0], moveFrom[1], self.queue)
                             canMove = CanMove(
                                 self.whiteFigures[moveFigureIndex].x, self.whiteFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
@@ -127,7 +127,7 @@ class Controller(object):
                                 figure.x = moveTo[0]
                                 figure.y = moveTo[1]
                                 self.whiteFigures.append(figure)
-                                kingIndex = self.findFigure(0, 4, self.queue)
+                                kingIndex = self.WhatFigureOnPos(0, 4, self.queue)
                                 king = self.whiteFigures.pop(kingIndex)
                                 king.x = 0
                                 king.y = 2
@@ -144,13 +144,13 @@ class Controller(object):
                         return False
                 else:
                     return False
-            # Cheak h1 Rook
+            #* Cheak h1 Rook
             elif (moveFrom[0], moveFrom[1]) == (0, 7) and self.board.boardGraphic[0][7].img == ['♖ ', '♜ ']:
                 if (moveTo[0], moveTo[1]) == (0, 5) and self.board.boardGraphic[0][4].img == ['♔ ', '♚ ']:
                     if self.CheckToVoid(0, 6) and self.CheckToVoid(0, 5):
                         oponentCanMove = self.GetAllOponentPothitionToAttak()
                         if not (0, 6) in oponentCanMove and not (0, 4) in oponentCanMove:
-                            moveFigureIndex = self.findFigure(
+                            moveFigureIndex = self.WhatFigureOnPos(
                                 moveFrom[0], moveFrom[1], self.queue)
                             canMove = CanMove(
                                 self.whiteFigures[moveFigureIndex].x, self.whiteFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
@@ -159,7 +159,7 @@ class Controller(object):
                                 figure.x = moveTo[0]
                                 figure.y = moveTo[1]
                                 self.whiteFigures.append(figure)
-                                kingIndex = self.findFigure(0, 4, self.queue)
+                                kingIndex = self.WhatFigureOnPos(0, 4, self.queue)
                                 king = self.whiteFigures.pop(kingIndex)
                                 king.x = 0
                                 king.y = 6
@@ -176,15 +176,15 @@ class Controller(object):
                         return False
             else:
                 return False
-        # Cheak black
+        #* Cheak black
         else:
-            # Cheak a8 Rook
+            #* Cheak a8 Rook
             if (moveFrom[0], moveFrom[1]) == (7, 0) and self.board.boardGraphic[7][0].img == ['♖ ', '♜ ']:
                 if (moveTo[0], moveTo[1]) == (7, 3) and self.board.boardGraphic[7][4].img == ['♔ ', '♚ ']:
                     if self.CheckToVoid(7, 1) and self.CheckToVoid(7, 2) and self.CheckToVoid(7, 3):
                         oponentCanMove = self.GetAllOponentPothitionToAttak()
                         if not (7, 2) in oponentCanMove and not (7, 4) in oponentCanMove:
-                            moveFigureIndex = self.findFigure(
+                            moveFigureIndex = self.WhatFigureOnPos(
                                 moveFrom[0], moveFrom[1], self.queue)
                             canMove = CanMove(
                                 self.blackFigures[moveFigureIndex].x, self.blackFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
@@ -193,7 +193,7 @@ class Controller(object):
                                 figure.x = moveTo[0]
                                 figure.y = moveTo[1]
                                 self.blackFigures.append(figure)
-                                kingIndex = self.findFigure(7, 4, self.queue)
+                                kingIndex = self.WhatFigureOnPos(7, 4, self.queue)
                                 king = self.blackFigures.pop(kingIndex)
                                 king.x = 7
                                 king.y = 2
@@ -210,13 +210,13 @@ class Controller(object):
                         return False
                 else:
                     return False
-            # Cheak h1 Rook
+            #* Cheak h1 Rook
             elif (moveFrom[0], moveFrom[1]) == (7, 7) and self.board.boardGraphic[7][7].img == ['♖ ', '♜ ']:
                 if (moveTo[0], moveTo[1]) == (7, 5) and self.board.boardGraphic[7][4].img == ['♔ ', '♚ ']:
                     if self.CheckToVoid(7, 6) and self.CheckToVoid(7, 5):
                         oponentCanMove = self.GetAllOponentPothitionToAttak()
                         if not (7, 6) in oponentCanMove and not (7, 4) in oponentCanMove:
-                            moveFigureIndex = self.findFigure(
+                            moveFigureIndex = self.WhatFigureOnPos(
                                 moveFrom[0], moveFrom[1], self.queue)
                             canMove = CanMove(
                                 self.blackFigures[moveFigureIndex].x, self.blackFigures[moveFigureIndex].y, self.board, self.GetAllOponentPothitionToAttak()).canMove
@@ -225,7 +225,7 @@ class Controller(object):
                                 figure.x = moveTo[0]
                                 figure.y = moveTo[1]
                                 self.blackFigures.append(figure)
-                                kingIndex = self.findFigure(7, 4, self.queue)
+                                kingIndex = self.WhatFigureOnPos(7, 4, self.queue)
                                 king = self.blackFigures.pop(kingIndex)
                                 king.x = 7
                                 king.y = 6
@@ -242,6 +242,40 @@ class Controller(object):
                         return False
             else:
                 return False
+
+    def ChechToEndGame(self):
+        if self.queue == 0:
+            pass
+        elif self.queue == 1:
+            pass
+        pass
+
+    #* color - what list to search
+    def FindFiguresIndex(self, figureName, color):
+        finededItemIndex = []
+        img = []
+        if figureName == "King":
+            img = ['♔ ', '♚ ']
+        elif figureName == "Queen":
+            img = ['♕ ', '♛ ']
+        elif figureName == "Rook":
+            img = ['♖ ', '♜ ']
+        elif figureName == "Bishop":
+            img = ['♗ ', '♝ ']
+        elif figureName == "Knight":
+            img = ['♘ ', '♞ ']
+        elif figureName == "Pawn":
+            img = ['♙ ', '♟ ']
+        
+        if color == 0:
+            for item in self.whiteFigures:
+                if item.img == img:
+                    finededItemIndex.append(self.whiteFigures.index(item)) 
+        else:
+            for item in self.blackFigures:
+                if item.img == img:
+                    finededItemIndex.append(self.blackFigures.index(item)) 
+        return finededItemIndex
 
     def MoveFigure(self, fromTo):
         moveFrom = (int(fromTo[1])-1, fromTo[0])
@@ -249,8 +283,8 @@ class Controller(object):
         moveTo = (int(fromTo[-1])-1, fromTo[-2])
         moveTo = (moveTo[0], self.ConvertLetterToNumber(moveTo[1]))
 
-        moveFigureIndex = self.findFigure(moveFrom[0], moveFrom[1], self.queue)
-        moveToFigureIndex = self.findFigure(
+        moveFigureIndex = self.WhatFigureOnPos(moveFrom[0], moveFrom[1], self.queue)
+        moveToFigureIndex = self.WhatFigureOnPos(
             moveTo[0], moveTo[1], 1 if self.queue == 0 else 0)
         if moveFigureIndex != None:
             if not self.Castling(moveFrom, moveTo):
@@ -275,7 +309,7 @@ class Controller(object):
         else:
             return False
 
-    def findFigure(self, x, y, color):
+    def WhatFigureOnPos(self, x, y, color):
         findIn = self.whiteFigures if color == 0 else self.blackFigures
         for item in findIn:
             if item.x == x and item.y == y:
